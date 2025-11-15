@@ -1,0 +1,25 @@
+{
+  "short_name": "craft Hindustan",
+  "name": "craft Hindustan - Sell Your Handwork",
+  "icons": [
+    {
+      "src": "images/Cream Simple Art and Craft Store Logo (1).png",
+      "sizes": "any",
+      "type": "image/png"
+    },
+    {
+      "src": "images/Cream Simple Art and Craft Store Logo (1).png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "images/Cream Simple Art and Craft Store Logo (1).png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#8B4513",
+  "background_color": "#ffffff"
+}
