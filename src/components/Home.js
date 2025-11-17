@@ -14,6 +14,11 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [loadingBrands, setLoadingBrands] = useState(true);
   const [error, setError] = useState('');
+  const [stats, setStats] = useState({
+    totalBrands: 0,
+    totalProducts: 0,
+    totalArtisans: 0
+  });
 
   // Helper function to safely get price as string
   const getPriceString = (price) => {
@@ -135,6 +140,119 @@ const Home = () => {
     return () => clearInterval(interval);
   }, [translations.length]);
 
+  // Fetch statistics for ribbon
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        // Fetch all brands to get count
+        const brandsResult = await brandAPI.getAllBrands();
+        const totalBrands = brandsResult?.success && brandsResult?.brands ? brandsResult.brands.length : 0;
+        
+        // Fetch all posts to get count
+        const postsResult = await postAPI.getPosts();
+        const totalProducts = postsResult?.success && postsResult?.posts ? postsResult.posts.length : 0;
+        
+        // Total artisans is same as brands for now
+        const totalArtisans = totalBrands;
+
+        setStats({
+          totalBrands,
+          totalProducts,
+          totalArtisans
+        });
+      } catch (err) {
+        console.error('Error fetching stats:', err);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
+  // Animated counter component
+  const AnimatedCounter = ({ end, duration = 2000, label }) => {
+    const [count, setCount] = useState(0);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting && !isVisible) {
+            setIsVisible(true);
+          }
+        },
+        { threshold: 0.1 }
+      );
+
+      const element = document.getElementById(`counter-${label}`);
+      if (element) {
+        observer.observe(element);
+      }
+
+      return () => {
+        if (element) {
+          observer.unobserve(element);
+        }
+      };
+    }, [label, isVisible]);
+
+    useEffect(() => {
+      if (!isVisible) return;
+
+      let startTime = null;
+      const animate = (currentTime) => {
+        if (!startTime) startTime = currentTime;
+        const progress = Math.min((currentTime - startTime) / duration, 1);
+        
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const currentCount = Math.floor(easeOutQuart * end);
+        
+        setCount(currentCount);
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          setCount(end);
+        }
+      };
+
+      requestAnimationFrame(animate);
+    }, [isVisible, end, duration]);
+
+    return (
+      <div className="stats-ribbon-item" id={`counter-${label}`}>
+        <div className="stats-ribbon-icon">
+          {label === 'brands' && (
+            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 7h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2z"/>
+            </svg>
+          )}
+          {label === 'products' && (
+            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M6 2L3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6l-3-4H6z"/>
+              <path d="M3 6h18"/>
+              <path d="M16 10a4 4 0 01-8 0"/>
+            </svg>
+          )}
+          {label === 'artisans' && (
+            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+            </svg>
+          )}
+        </div>
+        <div className="stats-ribbon-content">
+          <div className="stats-ribbon-number">{count.toLocaleString()}+</div>
+          <div className="stats-ribbon-label">
+            {label === 'brands' && 'Brands'}
+            {label === 'products' && 'Products'}
+            {label === 'artisans' && 'Artisans'}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="home-container">
       <div className="home-content">
@@ -161,6 +279,15 @@ const Home = () => {
             autoplay
             className="lottie-animation"
           />
+        </div>
+      </div>
+
+      {/* Statistics Ribbon Section */}
+      <div className="stats-ribbon-section">
+        <div className="stats-ribbon-container">
+          <AnimatedCounter end={stats.totalBrands} label="brands" />
+          <AnimatedCounter end={stats.totalProducts} label="products" />
+          <AnimatedCounter end={stats.totalArtisans} label="artisans" />
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useWishlist } from '../context/WishlistContext';
 import HeartIcon from './HeartIcon';
@@ -9,6 +9,24 @@ const Navbar = () => {
   const location = useLocation();
   const { isLoggedIn, logout, wishlist, user, login } = useWishlist();
   const [showLogin, setShowLogin] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  // Close mobile menu when window is resized to desktop size
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleLoginSuccess = (userData) => {
     // Update the context with the logged-in user
@@ -36,37 +54,65 @@ const Navbar = () => {
     return null;
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <>
+      {/* Mobile menu backdrop */}
+      {isMobileMenuOpen && (
+        <div 
+          className="mobile-menu-backdrop" 
+          onClick={closeMobileMenu}
+          aria-hidden="true"
+        />
+      )}
+
       <nav className="navbar">
         {/* Logo on the left */}
-        <Link to="/" className="navbar-logo">
+        <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
           <img src="/images/Cream Simple Art and Craft Store Logo (3).png" alt="Craft Hindustan Logo" className="logo-img" />
         </Link>
 
-        <div className="navbar-container">
+        {/* Hamburger menu button */}
+        <button 
+          className={`hamburger-menu ${isMobileMenuOpen ? 'active' : ''}`}
+          onClick={toggleMobileMenu}
+          aria-label="Toggle menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div className={`navbar-container ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
           {/* Navigation links */}
           <ul className="navbar-menu">
             <li className="navbar-item">
-              <Link to="/home" className={`navbar-link ${location.pathname === '/' || location.pathname === '/home' ? 'active' : ''}`}>Home</Link>
+              <Link to="/home" className={`navbar-link ${location.pathname === '/' || location.pathname === '/home' ? 'active' : ''}`} onClick={closeMobileMenu}>Home</Link>
             </li>
             <li className="navbar-item">
-              <Link to="/brands" className={`navbar-link ${location.pathname === '/brands' ? 'active' : ''}`}>Brands</Link>
+              <Link to="/brands" className={`navbar-link ${location.pathname === '/brands' ? 'active' : ''}`} onClick={closeMobileMenu}>Brands</Link>
             </li>
             <li className="navbar-item">
-              <Link to="/products" className={`navbar-link ${location.pathname === '/products' ? 'active' : ''}`}>Products</Link>
+              <Link to="/products" className={`navbar-link ${location.pathname === '/products' ? 'active' : ''}`} onClick={closeMobileMenu}>Products</Link>
             </li>
             <li className="navbar-item">
-              <Link to="/events" className={`navbar-link ${location.pathname === '/events' ? 'active' : ''}`}>Events</Link>
+              <Link to="/events" className={`navbar-link ${location.pathname === '/events' ? 'active' : ''}`} onClick={closeMobileMenu}>Events</Link>
             </li>
             <li className="navbar-item">
-              <Link to="/services" className={`navbar-link ${location.pathname === '/services' ? 'active' : ''}`}>Services</Link>
+              <Link to="/services" className={`navbar-link ${location.pathname === '/services' ? 'active' : ''}`} onClick={closeMobileMenu}>Services</Link>
             </li>
             <li className="navbar-item">
-              <Link to="/faq" className={`navbar-link ${location.pathname === '/faq' ? 'active' : ''}`}>FAQ</Link>
+              <Link to="/faq" className={`navbar-link ${location.pathname === '/faq' ? 'active' : ''}`} onClick={closeMobileMenu}>FAQ</Link>
             </li>
             <li className="navbar-item">
-              <Link to="/contact" className={`navbar-link ${location.pathname === '/contact' ? 'active' : ''}`}>Contact us</Link>
+              <Link to="/contact" className={`navbar-link ${location.pathname === '/contact' ? 'active' : ''}`} onClick={closeMobileMenu}>Contact us</Link>
             </li>
           </ul>
 
@@ -77,6 +123,7 @@ const Navbar = () => {
                 <Link 
                   to="/wishlist" 
                   className={`wishlist-link ${location.pathname === '/wishlist' ? 'active' : ''}`}
+                  onClick={closeMobileMenu}
                 >
                   <span className="wishlist-icon">
                     <HeartIcon filled={true} />
@@ -88,6 +135,7 @@ const Navbar = () => {
                   to="/chat"
                   aria-label="Open chat"
                   className={`chat-icon-link ${location.pathname.startsWith('/chat') ? 'active' : ''}`}
+                  onClick={closeMobileMenu}
                 >
                   <span className="chat-icon">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -100,6 +148,7 @@ const Navbar = () => {
                 <Link 
                   to="/profile" 
                   className="profile-btn-link"
+                  onClick={closeMobileMenu}
                 >
                   <div className="profile-avatar">
                     {getProfileImage() ? (
@@ -126,7 +175,10 @@ const Navbar = () => {
               </>
             )}
             {!isLoggedIn && (
-              <button className="login-btn" onClick={() => setShowLogin(true)}>
+              <button className="login-btn" onClick={() => {
+                setShowLogin(true);
+                closeMobileMenu();
+              }}>
                 Login
               </button>
             )}
