@@ -266,16 +266,6 @@ const Profile = () => {
             <p>Create or manage your brand</p>
           </Link>
 
-          <Link to="/sales" className="profile-menu-card">
-            <div className="profile-menu-icon">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-              </svg>
-            </div>
-            <h3>Sales</h3>
-            <p>View your sales and orders</p>
-          </Link>
-
           <Link to="/profile/all" className="profile-menu-card">
             <div className="profile-menu-icon">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -283,7 +273,7 @@ const Profile = () => {
                 <circle cx="12" cy="7" r="4"/>
               </svg>
             </div>
-            <h3>All Stuff</h3>
+            <h3>My Craft</h3>
             <p>View all your account details</p>
           </Link>
 

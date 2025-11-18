@@ -61,7 +61,18 @@ const Footer = () => {
             <h4 className="footer-heading">Support</h4>
             <ul className="footer-links">
               <li><Link to="/faq">FAQ</Link></li>
-              <li><Link to="/contact">Contact Us</Link></li>
+            </ul>
+          </div>
+          
+          <div className="footer-section">
+            <h4 className="footer-heading">Site Roadmap</h4>
+            <ul className="footer-links">
+              <li><Link to="/home">Home</Link></li>
+              <li><Link to="/brands">Brands</Link></li>
+              <li><Link to="/products">Products</Link></li>
+              <li><Link to="/events">Events</Link></li>
+              <li><Link to="/services">Services</Link></li>
+              <li><Link to="/faq">FAQ</Link></li>
             </ul>
           </div>
           

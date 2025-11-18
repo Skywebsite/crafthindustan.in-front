@@ -40,8 +40,12 @@ const Post = () => {
           // Handle both old format (brands array) and new format (brand object)
           const brandsList = result.brands || (result.brand ? [result.brand] : []);
           setBrands(brandsList);
-          if (brandsList.length > 0) {
+          // Auto-select if only one brand
+          if (brandsList.length === 1) {
             setFormData(prev => ({ ...prev, brand: brandsList[0]._id }));
+          } else if (brandsList.length > 1) {
+            // If multiple brands, don't auto-select, let user choose
+            setFormData(prev => ({ ...prev, brand: '' }));
           }
         }
       } catch (err) {
@@ -267,27 +271,54 @@ const Post = () => {
           ) : (
             <div className="form-group">
               <label htmlFor="brand">Brand *</label>
-              <select
-                id="brand"
-                name="brand"
-                value={formData.brand}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Select a brand</option>
-                {brands.map(brand => (
-                  <option key={brand._id} value={brand._id}>{brand.name}</option>
-                ))}
-              </select>
-              <small>
-                <button
-                  type="button"
-                  onClick={() => navigate('/brand')}
-                  className="link-btn"
-                >
-                  {brands.length > 0 ? 'Edit your brand' : 'Create your brand'}
-                </button>
-              </small>
+              {brands.length === 1 ? (
+                <>
+                  <input
+                    type="text"
+                    value={brands[0].name}
+                    readOnly
+                    className="readonly-input"
+                  />
+                  <input
+                    type="hidden"
+                    name="brand"
+                    value={brands[0]._id}
+                  />
+                  <small>
+                    <button
+                      type="button"
+                      onClick={() => navigate('/brand')}
+                      className="link-btn"
+                    >
+                      Edit your brand
+                    </button>
+                  </small>
+                </>
+              ) : (
+                <>
+                  <select
+                    id="brand"
+                    name="brand"
+                    value={formData.brand}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="">Select a brand</option>
+                    {brands.map(brand => (
+                      <option key={brand._id} value={brand._id}>{brand.name}</option>
+                    ))}
+                  </select>
+                  <small>
+                    <button
+                      type="button"
+                      onClick={() => navigate('/brand')}
+                      className="link-btn"
+                    >
+                      {brands.length > 0 ? 'Edit your brand' : 'Create your brand'}
+                    </button>
+                  </small>
+                </>
+              )}
             </div>
           )}
 

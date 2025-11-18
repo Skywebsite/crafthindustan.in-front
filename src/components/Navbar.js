@@ -111,9 +111,6 @@ const Navbar = () => {
             <li className="navbar-item">
               <Link to="/faq" className={`navbar-link ${location.pathname === '/faq' ? 'active' : ''}`} onClick={closeMobileMenu}>FAQ</Link>
             </li>
-            <li className="navbar-item">
-              <Link to="/contact" className={`navbar-link ${location.pathname === '/contact' ? 'active' : ''}`} onClick={closeMobileMenu}>Contact us</Link>
-            </li>
           </ul>
 
           {/* Wishlist and Profile on the right */}
