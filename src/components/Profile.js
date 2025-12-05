@@ -135,12 +135,13 @@ const Profile = () => {
     );
   }
 
-  const userName = user?.name || user?.displayName || 'User';
+  const userName = String(user?.name || user?.displayName || 'User');
+  const pageTitle = `${userName}'s Profile - Craft Hindustan | Handmade Crafts Platform`;
 
   return (
     <>
       <Helmet>
-        <title>{userName}'s Profile - Craft Hindustan | Handmade Crafts Platform</title>
+        <title>{pageTitle}</title>
         <meta name="description" content={`View and manage ${userName}'s profile on Craft Hindustan. Manage your handmade products, connect with artisans, and grow your craft business.`} />
         <meta name="robots" content="noindex, nofollow" />
         <link rel="canonical" href="https://crafthindustan.com/profile" />

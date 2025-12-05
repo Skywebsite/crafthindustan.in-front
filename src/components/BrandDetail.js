@@ -75,16 +75,17 @@ const BrandDetail = () => {
     );
   }
 
-  const brandName = brand.name || 'Artisan Brand';
+  const brandName = String(brand.name || 'Artisan Brand');
   const brandBio = brand.bio || 'Handmade craft brand';
   const ownerName = brand.owner?.name || brand.ownerName || 'Artisan';
   const productCount = brand.postCount || posts.length || 0;
   const establishedYear = brand.establishedYear || '';
+  const pageTitle = `${brandName} - Handmade Craft Brand in Telangana | ${productCount} Products | Craft Hindustan`;
 
   return (
     <>
       <Helmet>
-        <title>{brandName} - Handmade Craft Brand in Telangana | {productCount} Products | Craft Hindustan</title>
+        <title>{pageTitle}</title>
         <meta 
           name="description" 
           content={`${brandBio.substring(0, 155)}... Explore ${productCount} handmade products by ${brandName} in Telangana. ${establishedYear ? `Established ${establishedYear}.` : ''} Authentic traditional crafts.`} 

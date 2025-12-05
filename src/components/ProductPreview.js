@@ -117,18 +117,19 @@ const ProductPreview = () => {
     }
   };
 
-  const productTitle = product.title || 'Handmade Craft';
+  const productTitle = String(product.title || 'Handmade Craft');
   const productDescription = product.description || 'Authentic handmade craft product';
-  const productCategory = product.category || 'Handmade';
+  const productCategory = String(product.category || 'Handmade');
   const productPrice = getPriceString(product.price);
   const productImage = product.images && product.images.length > 0 ? product.images[0] : '';
   const artistName = product.authorName || product.author?.name || 'Artisan';
-  const location = product.location || product.author?.location || 'Telangana';
+  const location = String(product.location || product.author?.location || 'Telangana');
+  const pageTitle = `${productTitle} - ${productCategory} in ${location} | Buy Handmade | Craft Hindustan`;
 
   return (
     <>
       <Helmet>
-        <title>{productTitle} - {productCategory} in {location} | Buy Handmade | Craft Hindustan</title>
+        <title>{pageTitle}</title>
         <meta 
           name="description" 
           content={`${productDescription.substring(0, 155)}... Buy this ${productCategory.toLowerCase()} handmade craft by ${artistName} in ${location}, Telangana. Price: ${productPrice}.`} 
