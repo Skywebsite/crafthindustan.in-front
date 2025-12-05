@@ -94,22 +94,74 @@ const Navbar = () => {
           {/* Navigation links */}
           <ul className="navbar-menu">
             <li className="navbar-item">
-              <Link to="/home" className={`navbar-link ${location.pathname === '/' || location.pathname === '/home' ? 'active' : ''}`} onClick={closeMobileMenu}>Home</Link>
+              <Link to="/home" className={`navbar-link ${location.pathname === '/' || location.pathname === '/home' ? 'active' : ''}`} onClick={closeMobileMenu}>
+                <span className="navbar-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                  </svg>
+                </span>
+                <span className="navbar-text">Home</span>
+              </Link>
             </li>
             <li className="navbar-item">
-              <Link to="/brands" className={`navbar-link ${location.pathname === '/brands' ? 'active' : ''}`} onClick={closeMobileMenu}>Brands</Link>
+              <Link to="/brands" className={`navbar-link ${location.pathname === '/brands' ? 'active' : ''}`} onClick={closeMobileMenu}>
+                <span className="navbar-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 11c0-1.1.9-2 2-2h4a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6z"></path>
+                    <path d="M13 7h4a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"></path>
+                    <path d="M3 21h18"></path>
+                  </svg>
+                </span>
+                <span className="navbar-text">Brands</span>
+              </Link>
             </li>
             <li className="navbar-item">
-              <Link to="/products" className={`navbar-link ${location.pathname === '/products' ? 'active' : ''}`} onClick={closeMobileMenu}>Products</Link>
+              <Link to="/products" className={`navbar-link ${location.pathname === '/products' ? 'active' : ''}`} onClick={closeMobileMenu}>
+                <span className="navbar-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                  </svg>
+                </span>
+                <span className="navbar-text">Products</span>
+              </Link>
             </li>
             <li className="navbar-item">
-              <Link to="/events" className={`navbar-link ${location.pathname === '/events' ? 'active' : ''}`} onClick={closeMobileMenu}>Events</Link>
+              <Link to="/events" className={`navbar-link ${location.pathname === '/events' ? 'active' : ''}`} onClick={closeMobileMenu}>
+                <span className="navbar-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                </span>
+                <span className="navbar-text">Events</span>
+              </Link>
             </li>
             <li className="navbar-item">
-              <Link to="/services" className={`navbar-link ${location.pathname === '/services' ? 'active' : ''}`} onClick={closeMobileMenu}>Services</Link>
+              <Link to="/services" className={`navbar-link ${location.pathname === '/services' ? 'active' : ''}`} onClick={closeMobileMenu}>
+                <span className="navbar-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                  </svg>
+                </span>
+                <span className="navbar-text">Services</span>
+              </Link>
             </li>
             <li className="navbar-item">
-              <Link to="/faq" className={`navbar-link ${location.pathname === '/faq' ? 'active' : ''}`} onClick={closeMobileMenu}>FAQ</Link>
+              <Link to="/faq" className={`navbar-link ${location.pathname === '/faq' ? 'active' : ''}`} onClick={closeMobileMenu}>
+                <span className="navbar-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  </svg>
+                </span>
+                <span className="navbar-text">FAQ</span>
+              </Link>
             </li>
           </ul>
 
@@ -117,6 +169,19 @@ const Navbar = () => {
           <div className="navbar-login">
             {isLoggedIn && (
               <>
+                {/* Create Post Button - Mobile Friendly */}
+                <Link 
+                  to="/post" 
+                  className={`create-post-btn-nav ${location.pathname === '/post' ? 'active' : ''}`}
+                  onClick={closeMobileMenu}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                  <span>Create Post</span>
+                </Link>
+
                 <Link 
                   to="/wishlist" 
                   className={`wishlist-link ${location.pathname === '/wishlist' ? 'active' : ''}`}

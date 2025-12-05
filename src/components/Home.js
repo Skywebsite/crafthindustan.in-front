@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { useWishlist } from '../context/WishlistContext';
 import { postAPI, brandAPI } from '../services/api';
 import HeartIcon from './HeartIcon';
+import ShareButton from './ShareButton';
 import './Home.css';
 
 const Home = () => {
@@ -19,6 +21,7 @@ const Home = () => {
     totalProducts: 0,
     totalArtisans: 0
   });
+  const [postImageIndices, setPostImageIndices] = useState({});
 
   // Helper function to safely get price as string
   const getPriceString = (price) => {
@@ -253,9 +256,98 @@ const Home = () => {
     );
   };
 
+  // Structured data for SEO
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Craft Hindustan",
+    "description": "Platform for handmade crafts, traditional art, and artisan products from artisans across India",
+    "url": "https://thecrafthindustan.in",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "IN"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "India"
+    },
+    "priceRange": "₹",
+    "currenciesAccepted": "INR"
+  };
+
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Craft Hindustan",
+    "url": "https://thecrafthindustan.in",
+    "logo": "https://thecrafthindustan.in/images/Cream Simple Art and Craft Store Logo (1).png",
+    "description": "A platform celebrating handmade crafts, traditional art, and artisan products from artisans across India",
+    "sameAs": []
+  };
+
   return (
-    <div className="home-container">
-      <div className="home-content">
+    <>
+      <Helmet>
+        <title>Handmade Crafts in India | Buy Handmade Online | Traditional Indian Crafts | Craft Hindustan</title>
+        <meta 
+          name="description" 
+          content="Discover authentic handmade crafts, traditional art, and artisan products from artisans across India. Buy directly from local craftsmen in Mumbai, Delhi, Bangalore, Hyderabad, Chennai, Kolkata, Pune, Ahmedabad, Jaipur, Surat, Lucknow, Kanpur, Nagpur, Indore, Bhopal, Visakhapatnam, Patna, Vadodara, Ghaziabad, Ludhiana, Agra, Nashik, Faridabad, Meerut, Rajkot, Varanasi, Srinagar, Amritsar, Allahabad, Ranchi, Howrah, Jabalpur, Gwalior, Coimbatore, Vijayawada, Jodhpur, Madurai, Raipur, Kota, Guwahati, Chandigarh, Solapur, Hubli, Tiruchirappalli, Bareilly, Moradabad, Mysore, Tiruppur, Gurgaon, Aligarh, Jalandhar, Bhubaneswar, Salem, Warangal, Thiruvananthapuram, Guntur, Amravati, Bikaner, Noida, Jamshedpur, Bhilai, Cuttack, Firozabad, Kochi, Nellore, Bhavnagar, Dehradun, Durgapur, Asansol, Rourkela, Nanded, Kolhapur, Ajmer, Gulbarga, Jamnagar, Ujjain, Siliguri, Jhansi, Jammu, Belgaum, Mangalore, Ambattur, Tirunelveli, Malegaon, Gaya, Jalgaon, Udaipur, Davanagere, Kozhikode, Akola, Kurnool, Bokaro, Bellary, Patiala, Agartala, Bhagalpur, Muzaffarnagar, Bhatpara, Latur, Dhule, Rohtak, Korba, Bhilwara, Berhampur, Muzaffarpur, Ahmednagar, Mathura, Kollam, Avadi, Kadapa, Sambalpur, Bilaspur, Shahjahanpur, Satara, Bijapur, Rampur, Shivamogga, Chandrapur, Junagadh, Thrissur, Alwar, Bardhaman, Kulti, Kakinada, Nizamabad, Parbhani, Tumkur, Khammam, Bihar Sharif, Panipat, Darbhanga, Aizawl, Dewas, Ichalkaranji, Karnal, Bathinda, Jalna, Eluru, Barasat, Purnia, Satna, Mau, Sonipat, Farrukhabad, Sagar, Durg, Imphal, Ratlam, Hapur, Arrah, Karimnagar, Anantapur, Etawah, Bharatpur, Begusarai, New Delhi, Gandhinagar, Barmer, Pondicherry, Sikar, Thoothukudi, Rewa, Mirzapur, Raichur, Pali, Rajahmundry, Khandwa, Yavatmal, Katihar, Sangrur, Bulandshahr, Murwara, Sambhal, Singrauli, Nadiad, Secunderabad, Naihati, Yamunanagar, Bidhan Nagar, Pallavaram, Bidar, Munger, Panchkula, Burhanpur, Kharagpur, Dindigul, Gandhidham, Hospet, Nangloi Jat, Malda, Ongole, Deoghar, Chhapra, Haldia, Nandyal, Morena, Amroha, Anand, Bhind, Madhyamgram, Bhiwani, Berhampore, Ambala, Morbi, Fatehpur, Raebareli, Chittoor, Bhusawal, Orai, Bahraich, Phusro, Vellore, Mehsana, Raiganj, Sirsa, Danapur, Serampore, Sultan Pur Majra, Guna, Jaunpur, Panvel, Shivpuri, Surendranagar Dudhrej, Unnao, Hugli-Chinsurah, Alappuzha, Kottayam, Machilipatnam, Shimla, Adoni, Tenali, Proddatur, Saharsa, Hindupur, Sasaram, Hajipur, Bhimavaram, Dehri, Madanapalle, Siwan, Bettiah, Guntakal, Srikakulam, Motihari, Dharmavaram, Gudivada, Narasaraopet, Bagalkot, Tadepalligudem, Kishanganj, Karaikudi, Suryapet, Jamalpur, Kavali, Tadipatri, Amaravati, Buxar, Jehanabad, Aurangabad, Gangawati, Vinukonda, Adilabad, Yadgir, Achalpur, Lakshmeshwar, Nalgonda, and all cities across India. Support traditional Indian craftsmanship and buy authentic handmade products online." 
+        />
+        <meta 
+          name="keywords" 
+          content="handmade crafts India, buy handmade online India, traditional crafts India, handmade products India, Indian artisans, traditional Indian art, buy Indian crafts, Indian handmade goods, authentic Indian products, Indian craft marketplace, handmade crafts Mumbai, handmade crafts Delhi, handmade crafts Bangalore, handmade crafts Hyderabad, handmade crafts Chennai, handmade crafts Kolkata, handmade crafts Pune, handmade crafts Ahmedabad, handmade crafts Jaipur, handmade crafts Surat, handmade crafts Lucknow, handmade crafts Kanpur, handmade crafts Nagpur, handmade crafts Indore, handmade crafts Bhopal, handmade crafts Visakhapatnam, handmade crafts Patna, handmade crafts Vadodara, handmade crafts Ghaziabad, handmade crafts Ludhiana, handmade crafts Agra, handmade crafts Nashik, handmade crafts Faridabad, handmade crafts Meerut, handmade crafts Rajkot, handmade crafts Varanasi, handmade crafts Srinagar, handmade crafts Amritsar, handmade crafts Allahabad, handmade crafts Ranchi, handmade crafts Howrah, handmade crafts Jabalpur, handmade crafts Gwalior, handmade crafts Coimbatore, handmade crafts Vijayawada, handmade crafts Jodhpur, handmade crafts Madurai, handmade crafts Raipur, handmade crafts Kota, handmade crafts Guwahati, handmade crafts Chandigarh, handmade crafts Solapur, handmade crafts Hubli, handmade crafts Tiruchirappalli, handmade crafts Bareilly, handmade crafts Moradabad, handmade crafts Mysore, handmade crafts Tiruppur, handmade crafts Gurgaon, handmade crafts Aligarh, handmade crafts Jalandhar, handmade crafts Bhubaneswar, handmade crafts Salem, handmade crafts Warangal, handmade crafts Thiruvananthapuram, handmade crafts Guntur, handmade crafts Amravati, handmade crafts Bikaner, handmade crafts Noida, handmade crafts Jamshedpur, handmade crafts Bhilai, handmade crafts Cuttack, handmade crafts Firozabad, handmade crafts Kochi, handmade crafts Nellore, handmade crafts Bhavnagar, handmade crafts Dehradun, handmade crafts Durgapur, handmade crafts Asansol, handmade crafts Rourkela, handmade crafts Nanded, handmade crafts Kolhapur, handmade crafts Ajmer, handmade crafts Gulbarga, handmade crafts Jamnagar, handmade crafts Ujjain, handmade crafts Siliguri, handmade crafts Jhansi, handmade crafts Jammu, handmade crafts Belgaum, handmade crafts Mangalore, handmade crafts Ambattur, handmade crafts Tirunelveli, handmade crafts Malegaon, handmade crafts Gaya, handmade crafts Jalgaon, handmade crafts Udaipur, handmade crafts Davanagere, handmade crafts Kozhikode, handmade crafts Akola, handmade crafts Kurnool, handmade crafts Bokaro, handmade crafts Bellary, handmade crafts Patiala, handmade crafts Agartala, handmade crafts Bhagalpur, handmade crafts Muzaffarnagar, handmade crafts Bhatpara, handmade crafts Latur, handmade crafts Dhule, handmade crafts Rohtak, handmade crafts Korba, handmade crafts Bhilwara, handmade crafts Berhampur, handmade crafts Muzaffarpur, handmade crafts Ahmednagar, handmade crafts Mathura, handmade crafts Kollam, handmade crafts Avadi, handmade crafts Kadapa, handmade crafts Sambalpur, handmade crafts Bilaspur, handmade crafts Shahjahanpur, handmade crafts Satara, handmade crafts Bijapur, handmade crafts Rampur, handmade crafts Shivamogga, handmade crafts Chandrapur, handmade crafts Junagadh, handmade crafts Thrissur, handmade crafts Alwar, handmade crafts Bardhaman, handmade crafts Kulti, handmade crafts Kakinada, handmade crafts Nizamabad, handmade crafts Parbhani, handmade crafts Tumkur, handmade crafts Khammam, handmade crafts Bihar Sharif, handmade crafts Panipat, handmade crafts Darbhanga, handmade crafts Aizawl, handmade crafts Dewas, handmade crafts Ichalkaranji, handmade crafts Karnal, handmade crafts Bathinda, handmade crafts Jalna, handmade crafts Eluru, handmade crafts Barasat, handmade crafts Purnia, handmade crafts Satna, handmade crafts Mau, handmade crafts Sonipat, handmade crafts Farrukhabad, handmade crafts Sagar, handmade crafts Durg, handmade crafts Imphal, handmade crafts Ratlam, handmade crafts Hapur, handmade crafts Arrah, handmade crafts Karimnagar, handmade crafts Anantapur, handmade crafts Etawah, handmade crafts Bharatpur, handmade crafts Begusarai, handmade crafts New Delhi, handmade crafts Gandhinagar, handmade crafts Barmer, handmade crafts Pondicherry, handmade crafts Sikar, handmade crafts Thoothukudi, handmade crafts Rewa, handmade crafts Mirzapur, handmade crafts Raichur, handmade crafts Pali, handmade crafts Rajahmundry, handmade crafts Khandwa, handmade crafts Yavatmal, handmade crafts Katihar, handmade crafts Sangrur, handmade crafts Bulandshahr, handmade crafts Murwara, handmade crafts Sambhal, handmade crafts Singrauli, handmade crafts Nadiad, handmade crafts Secunderabad, handmade crafts Naihati, handmade crafts Yamunanagar, handmade crafts Bidhan Nagar, handmade crafts Pallavaram, handmade crafts Bidar, handmade crafts Munger, handmade crafts Panchkula, handmade crafts Burhanpur, handmade crafts Kharagpur, handmade crafts Dindigul, handmade crafts Gandhidham, handmade crafts Hospet, handmade crafts Nangloi Jat, handmade crafts Malda, handmade crafts Ongole, handmade crafts Deoghar, handmade crafts Chhapra, handmade crafts Haldia, handmade crafts Nandyal, handmade crafts Morena, handmade crafts Amroha, handmade crafts Anand, handmade crafts Bhind, handmade crafts Madhyamgram, handmade crafts Bhiwani, handmade crafts Berhampore, handmade crafts Ambala, handmade crafts Morbi, handmade crafts Fatehpur, handmade crafts Raebareli, handmade crafts Chittoor, handmade crafts Bhusawal, handmade crafts Orai, handmade crafts Bahraich, handmade crafts Phusro, handmade crafts Vellore, handmade crafts Mehsana, handmade crafts Raiganj, handmade crafts Sirsa, handmade crafts Danapur, handmade crafts Serampore, handmade crafts Sultan Pur Majra, handmade crafts Guna, handmade crafts Jaunpur, handmade crafts Panvel, handmade crafts Shivpuri, handmade crafts Surendranagar Dudhrej, handmade crafts Unnao, handmade crafts Hugli-Chinsurah, handmade crafts Alappuzha, handmade crafts Kottayam, handmade crafts Machilipatnam, handmade crafts Shimla, handmade crafts Adoni, handmade crafts Tenali, handmade crafts Proddatur, handmade crafts Saharsa, handmade crafts Hindupur, handmade crafts Sasaram, handmade crafts Hajipur, handmade crafts Bhimavaram, handmade crafts Dehri, handmade crafts Madanapalle, handmade crafts Siwan, handmade crafts Bettiah, handmade crafts Guntakal, handmade crafts Srikakulam, handmade crafts Motihari, handmade crafts Dharmavaram, handmade crafts Gudivada, handmade crafts Narasaraopet, handmade crafts Bagalkot, handmade crafts Tadepalligudem, handmade crafts Kishanganj, handmade crafts Karaikudi, handmade crafts Suryapet, handmade crafts Jamalpur, handmade crafts Kavali, handmade crafts Tadipatri, handmade crafts Amaravati, handmade crafts Buxar, handmade crafts Jehanabad, handmade crafts Aurangabad, handmade crafts Gangawati, handmade crafts Vinukonda, handmade crafts Adilabad, handmade crafts Yadgir, handmade crafts Achalpur, handmade crafts Lakshmeshwar, handmade crafts Nalgonda, craft hindustan, buy handmade online, support local artisans, traditional Indian crafts" 
+        />
+        <meta name="author" content="Craft Hindustan" />
+        <meta name="robots" content="index, follow" />
+        <meta name="language" content="English" />
+        <meta name="revisit-after" content="7 days" />
+        <meta name="geo.region" content="IN" />
+        <meta name="geo.placename" content="India" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://thecrafthindustan.in/" />
+        <meta property="og:title" content="Handmade Crafts in India | Buy Handmade Online | Craft Hindustan" />
+        <meta 
+          property="og:description" 
+          content="Discover authentic handmade crafts, traditional art, and artisan products from artisans across India. Buy directly from local craftsmen in all major cities." 
+        />
+        <meta property="og:image" content="%PUBLIC_URL%/images/Cream Simple Art and Craft Store Logo (1).png" />
+        <meta property="og:locale" content="en_IN" />
+        <meta property="og:site_name" content="Craft Hindustan" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://thecrafthindustan.in/" />
+        <meta name="twitter:title" content="Handmade Crafts in India | Craft Hindustan" />
+        <meta 
+          name="twitter:description" 
+          content="Discover authentic handmade crafts, traditional art, and artisan products from artisans across India. Buy directly from local craftsmen in all major cities." 
+        />
+        <meta name="twitter:image" content="%PUBLIC_URL%/images/Cream Simple Art and Craft Store Logo (1).png" />
+        
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://thecrafthindustan.in/" />
+        
+        {/* Additional SEO Tags */}
+        <meta name="theme-color" content="#8B4513" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Craft Hindustan" />
+        
+        {/* Structured Data for Local Business */}
+        <script type="application/ld+json">
+          {JSON.stringify(localBusinessSchema)}
+        </script>
+        
+        {/* Structured Data for Organization */}
+        <script type="application/ld+json">
+          {JSON.stringify(organizationSchema)}
+        </script>
+      </Helmet>
+      
+      <div className="home-container">
+        <div className="home-content">
         <div className="home-left">
           <div className="home-text-content">
             <h1 className="home-title">
@@ -309,14 +401,79 @@ const Home = () => {
             </div>
           ) : (
             <div className="featured-products-grid">
-              {posts.map((post) => (
+              {posts.map((post) => {
+                const currentIndex = postImageIndices[post._id] || 0;
+                const images = post.images || [];
+                const hasMultipleImages = images.length > 1;
+                
+                const nextImage = (e) => {
+                  e.stopPropagation();
+                  setPostImageIndices(prev => ({
+                    ...prev,
+                    [post._id]: (currentIndex + 1) % images.length
+                  }));
+                };
+                
+                const prevImage = (e) => {
+                  e.stopPropagation();
+                  setPostImageIndices(prev => ({
+                    ...prev,
+                    [post._id]: (currentIndex - 1 + images.length) % images.length
+                  }));
+                };
+                
+                const goToImage = (e, idx) => {
+                  e.stopPropagation();
+                  setPostImageIndices(prev => ({
+                    ...prev,
+                    [post._id]: idx
+                  }));
+                };
+                
+                return (
                 <div key={post._id} className="featured-product-card" onClick={() => navigate(`/post/${post._id}`)}>
                   <div className="featured-product-image">
                     <img 
-                      src={post.images && post.images.length > 0 ? post.images[0] : 'https://via.placeholder.com/300'} 
+                        src={images.length > 0 ? images[currentIndex] : 'https://via.placeholder.com/300'} 
                       alt={post.title} 
                     />
+                      {hasMultipleImages && (
+                        <>
+                          <button 
+                            className="image-carousel-btn image-carousel-prev"
+                            onClick={prevImage}
+                            aria-label="Previous image"
+                          >
+                            ‹
+                          </button>
+                          <button 
+                            className="image-carousel-btn image-carousel-next"
+                            onClick={nextImage}
+                            aria-label="Next image"
+                          >
+                            ›
+                          </button>
+                          <div className="image-carousel-dots">
+                            {images.map((_, idx) => (
+                              <span
+                                key={idx}
+                                className={`carousel-dot ${currentIndex === idx ? 'active' : ''}`}
+                                onClick={(e) => goToImage(e, idx)}
+                              />
+                            ))}
+                          </div>
+                        </>
+                      )}
+                    </div>
                     <div className="featured-product-overlay"></div>
+                    <div className="featured-product-actions">
+                      <ShareButton
+                        url={`${window.location.origin}/post/${post._id}`}
+                        title={post.title}
+                        description={post.description}
+                        image={post.images?.[0]}
+                        className="featured-share-btn"
+                      />
                     <button
                       className={`featured-wishlist-icon-btn ${isInWishlist(post._id) ? 'wishlist-icon-btn-active' : ''}`}
                       onClick={async (e) => {
@@ -356,7 +513,8 @@ const Home = () => {
                     </button>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
@@ -400,6 +558,13 @@ const Home = () => {
                       </div>
                     )}
                     <div className="artist-brand-overlay"></div>
+                    <ShareButton
+                      url={`${window.location.origin}/brand/${brand._id}`}
+                      title={`${brand.name} - Handmade Craft Brand`}
+                      description={brand.bio}
+                      image={brand.picture}
+                      className="artist-brand-share-btn"
+                    />
                   </div>
                   <div className="artist-brand-content">
                     <h3 className="artist-brand-name">{brand.name}</h3>
@@ -437,6 +602,7 @@ const Home = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

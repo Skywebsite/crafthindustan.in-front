@@ -59,10 +59,20 @@
   object-fit: cover;
 }
 
-.preview-wishlist-btn {
+.preview-actions {
   position: absolute;
   top: 15px;
   right: 15px;
+  display: flex;
+  gap: 0.75rem;
+  z-index: 10;
+}
+
+.preview-share-btn {
+  position: relative;
+}
+
+.preview-wishlist-btn {
   background: rgba(255, 255, 255, 0.95);
   border: none;
   border-radius: 50%;
@@ -73,7 +83,6 @@
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  z-index: 10;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   padding: 0;
 }
@@ -383,6 +392,12 @@
 .product-thumbnails img:hover {
   border-color: #8B4513;
   transform: scale(1.05);
+}
+
+.product-thumbnails img.thumbnail-active {
+  border-color: #8B4513;
+  border-width: 3px;
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.3);
 }
 
 .contact-note-section {

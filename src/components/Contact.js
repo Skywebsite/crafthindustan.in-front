@@ -1,10 +1,37 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import './Page.css';
 
 const Contact = () => {
   return (
-    <div className="page-container">
-      <div className="page-content">
+    <>
+      <Helmet>
+        <title>Contact Us - Craft Hindustan | Hyderabad, Telangana | Handmade Crafts Support</title>
+        <meta 
+          name="description" 
+          content="Contact Craft Hindustan in Hyderabad, Telangana. Get in touch for handmade crafts, artisan services, custom orders, and support. Located in Boduppal, Hyderabad." 
+        />
+        <meta 
+          name="keywords" 
+          content="contact craft hindustan, handmade crafts contact, artisan platform contact, craft hindustan Hyderabad, Telangana crafts contact, handmade support, craft marketplace contact, Boduppal Hyderabad, Skyweb IT Solution" 
+        />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://crafthindustan.com/contact" />
+        <meta property="og:title" content="Contact Us - Craft Hindustan | Hyderabad, Telangana" />
+        <meta property="og:description" content="Contact Craft Hindustan in Hyderabad, Telangana for handmade crafts, artisan services, and support." />
+        <meta property="og:url" content="https://crafthindustan.com/contact" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Contact Us - Craft Hindustan | Hyderabad, Telangana" />
+        <meta name="twitter:description" content="Contact Craft Hindustan in Hyderabad, Telangana for handmade crafts, artisan services, and support." />
+        <meta name="geo.region" content="IN-TG" />
+        <meta name="geo.placename" content="Hyderabad, Telangana" />
+        <meta name="geo.position" content="17.3850;78.4867" />
+        <meta name="ICBM" content="17.3850, 78.4867" />
+      </Helmet>
+      
+      <div className="page-container">
+        <div className="page-content">
         <h1 className="page-title">Contact Us</h1>
         <p className="page-description">
           Have questions or need assistance? We'd love to hear from you. Reach out to us through any of the following ways.
@@ -65,6 +92,7 @@ const Contact = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

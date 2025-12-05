@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { useWishlist } from '../context/WishlistContext';
 import HeartIcon from './HeartIcon';
 import './Page.css';
@@ -20,8 +21,16 @@ const Wishlist = () => {
   };
 
   return (
-    <div className="page-container">
-      <div className="page-content">
+    <>
+      <Helmet>
+        <title>My Wishlist - Handmade Crafts | Craft Hindustan</title>
+        <meta name="description" content="View your saved handmade crafts and artisan products. Manage your wishlist and buy authentic handmade products from Hyderabad and Telangana." />
+        <meta name="robots" content="noindex, nofollow" />
+        <link rel="canonical" href="https://crafthindustan.com/wishlist" />
+      </Helmet>
+      
+      <div className="page-container">
+        <div className="page-content">
         <h1 className="page-title">My Wishlist</h1>
         {wishlist.length === 0 ? (
           <div className="wishlist-empty">
@@ -58,7 +67,16 @@ const Wishlist = () => {
                     <h3 className="product-item-name">{product.name}</h3>
                     <div className="product-item-footer">
                       <span className="product-item-price">{getPriceString(product.price)}</span>
-                      <span className="product-item-rating">⭐ {product.rating}</span>
+                      {product.rating ? (
+                        <span className="product-item-rating">
+                          <span className="product-stat-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                            <span>{product.rating}</span>
+                          </span>
+                        </span>
+                      ) : null}
                     </div>
                     <button 
                       className="product-item-btn"
@@ -77,6 +95,7 @@ const Wishlist = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

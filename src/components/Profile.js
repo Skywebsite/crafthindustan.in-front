@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { useWishlist } from '../context/WishlistContext';
 import { userAPI } from '../services/api';
 import './Profile.css';
@@ -118,17 +119,34 @@ const Profile = () => {
 
   if (!isLoggedIn) {
     return (
-      <div className="profile-container">
+      <>
+        <Helmet>
+          <title>Profile - Craft Hindustan | Handmade Crafts Platform</title>
+          <meta name="description" content="Login to view and manage your profile on Craft Hindustan. Access your account, manage your handmade products, and connect with artisans." />
+          <meta name="robots" content="noindex, nofollow" />
+        </Helmet>
+        <div className="profile-container">
         <div className="profile-not-logged-in">
           <h2>Please log in to view your profile</h2>
           <Link to="/" className="login-link-btn">Go to Login</Link>
-        </div>
       </div>
+    </div>
+    </>
     );
   }
 
+  const userName = user?.name || user?.displayName || 'User';
+
   return (
-    <div className="profile-container">
+    <>
+      <Helmet>
+        <title>{userName}'s Profile - Craft Hindustan | Handmade Crafts Platform</title>
+        <meta name="description" content={`View and manage ${userName}'s profile on Craft Hindustan. Manage your handmade products, connect with artisans, and grow your craft business.`} />
+        <meta name="robots" content="noindex, nofollow" />
+        <link rel="canonical" href="https://crafthindustan.com/profile" />
+      </Helmet>
+      
+      <div className="profile-container">
       <div className="profile-content">
         {/* Profile Header */}
         <div className="profile-header">
@@ -304,6 +322,7 @@ const Profile = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

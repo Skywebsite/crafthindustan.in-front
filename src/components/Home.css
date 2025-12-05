@@ -13,9 +13,9 @@
   width: 100%;
   max-width: 1400px;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 3rem;
+  gap: 4rem;
   margin: 0 auto;
   overflow-x: hidden;
 }
@@ -107,22 +107,44 @@
   flex: 1;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   height: 100%;
   min-height: 80vh;
-  padding-right: 0;
-  overflow: hidden;
+  padding-right: 2rem;
+  overflow: visible;
   max-width: 50%;
+  position: relative;
 }
 
 .lottie-animation {
   width: 100%;
-  height: 100%;
-  max-width: 100%;
-  max-height: 250vh;
-  min-height: 800px;
-  margin-right: 0;
+  height: auto;
+  max-width: 600px;
+  min-width: 500px;
+  min-height: 600px;
+  max-height: 90vh;
+  margin: 0 auto;
   object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 10px 30px rgba(139, 69, 19, 0.15));
+  transition: transform 0.3s ease;
+}
+
+.lottie-animation:hover {
+  transform: scale(1.02);
+}
+
+/* Tablet responsive design */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .home-right {
+    padding-right: 1rem;
+  }
+
+  .lottie-animation {
+    max-width: 500px;
+    min-width: 450px;
+    min-height: 500px;
+  }
 }
 
 /* Responsive design */
@@ -191,14 +213,20 @@
 
   .home-right {
     width: 100%;
-    min-height: 40vh;
+    min-height: 50vh;
     max-width: 100%;
     padding-right: 0;
+    padding-left: 0;
+    justify-content: center;
   }
 
   .lottie-animation {
-    max-height: 50vh;
-    min-height: 300px;
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 400px;
+    max-height: 60vh;
+    width: 100%;
+    filter: drop-shadow(0 8px 20px rgba(139, 69, 19, 0.12));
   }
 }
 
@@ -273,7 +301,9 @@
   }
 
   .lottie-animation {
-    min-height: 250px;
+    min-height: 350px;
+    max-height: 50vh;
+    filter: drop-shadow(0 6px 15px rgba(139, 69, 19, 0.1));
   }
 }
 
@@ -576,6 +606,76 @@
   transform: scale(1.1);
 }
 
+.image-carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  color: #8B4513;
+  z-index: 5;
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.featured-product-card:hover .image-carousel-btn {
+  opacity: 1;
+}
+
+.image-carousel-btn:hover {
+  background: white;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.image-carousel-prev {
+  left: 10px;
+}
+
+.image-carousel-next {
+  right: 10px;
+}
+
+.image-carousel-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 5;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(139, 69, 19, 0.3);
+}
+
+.carousel-dot:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: scale(1.2);
+}
+
+.carousel-dot.active {
+  background: #8B4513;
+  border-color: #8B4513;
+  width: 10px;
+  height: 10px;
+}
+
 .featured-product-overlay {
   position: absolute;
   top: 0;
@@ -591,10 +691,20 @@
   opacity: 1;
 }
 
-.featured-wishlist-icon-btn {
+.featured-product-actions {
   position: absolute;
   top: 10px;
   right: 10px;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.featured-share-btn {
+  position: relative;
+}
+
+.featured-wishlist-icon-btn {
   background: rgba(255, 255, 255, 0.9);
   border: none;
   border-radius: 50%;
@@ -605,7 +715,6 @@
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  z-index: 10;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   padding: 0;
 }
@@ -849,6 +958,13 @@
 
 .artist-brand-card:hover .artist-brand-overlay {
   opacity: 1;
+}
+
+.artist-brand-share-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
 }
 
 .artist-brand-content {

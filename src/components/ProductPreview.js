@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { useWishlist } from '../context/WishlistContext';
 import { chatAPI, postAPI } from '../services/api';
 import HeartIcon from './HeartIcon';
+import ShareButton from './ShareButton';
 import './ProductPreview.css';
 
 const ProductPreview = () => {
@@ -13,6 +15,7 @@ const ProductPreview = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [chatLoading, setChatLoading] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const currentUserId = (user?._id || user?.id || '').toString();
 
   useEffect(() => {
@@ -114,9 +117,73 @@ const ProductPreview = () => {
     }
   };
 
+  const productTitle = product.title || 'Handmade Craft';
+  const productDescription = product.description || 'Authentic handmade craft product';
+  const productCategory = product.category || 'Handmade';
+  const productPrice = getPriceString(product.price);
+  const productImage = product.images && product.images.length > 0 ? product.images[0] : '';
+  const artistName = product.authorName || product.author?.name || 'Artisan';
+  const location = product.location || product.author?.location || 'Telangana';
+
   return (
-    <div className="product-preview-container">
-      <div className="product-preview-content">
+    <>
+      <Helmet>
+        <title>{productTitle} - {productCategory} in {location} | Buy Handmade | Craft Hindustan</title>
+        <meta 
+          name="description" 
+          content={`${productDescription.substring(0, 155)}... Buy this ${productCategory.toLowerCase()} handmade craft by ${artistName} in ${location}, Telangana. Price: ${productPrice}.`} 
+        />
+        <meta 
+          name="keywords" 
+          content={`${productTitle}, ${productCategory} Hyderabad, handmade ${productCategory.toLowerCase()} Telangana, buy ${productCategory.toLowerCase()}, ${artistName} crafts, handmade products ${location}, traditional crafts, artisan products, craft hindustan, ${productTitle.toLowerCase()}`} 
+        />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href={`https://crafthindustan.com/post/${id}`} />
+        <meta property="og:title" content={`${productTitle} - ${productCategory} | Craft Hindustan`} />
+        <meta property="og:description" content={productDescription.substring(0, 200)} />
+        <meta property="og:url" content={`https://crafthindustan.com/post/${id}`} />
+        <meta property="og:type" content="product" />
+        {productImage && <meta property="og:image" content={productImage} />}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${productTitle} - ${productCategory}`} />
+        <meta name="twitter:description" content={productDescription.substring(0, 200)} />
+        {productImage && <meta name="twitter:image" content={productImage} />}
+        <meta property="product:price:amount" content={productPrice.replace(/[₹,]/g, '')} />
+        <meta property="product:price:currency" content="INR" />
+        <meta property="product:availability" content="in stock" />
+        <meta property="product:category" content={productCategory} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": productTitle,
+            "description": productDescription,
+            "image": product.images || [],
+            "category": productCategory,
+            "brand": {
+              "@type": "Brand",
+              "name": product.brandName || artistName
+            },
+            "offers": {
+              "@type": "Offer",
+              "price": productPrice.replace(/[₹,]/g, ''),
+              "priceCurrency": "INR",
+              "availability": "https://schema.org/InStock",
+              "seller": {
+                "@type": "Person",
+                "name": artistName
+              }
+            },
+            "manufacturer": {
+              "@type": "Person",
+              "name": artistName
+            }
+          })
+        }} />
+      </Helmet>
+      
+      <div className="product-preview-container">
+        <div className="product-preview-content">
         <button className="back-button" onClick={() => navigate(-1)}>
           ← Back
         </button>
@@ -124,30 +191,50 @@ const ProductPreview = () => {
         <div className="product-preview-main">
           <div className="product-preview-image-section">
             <div className="product-main-image">
-              <img src={product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/600'} alt={product.title} />
-              <button
-                className={`preview-wishlist-btn ${isInWishlist(product._id) ? 'wishlist-active' : ''}`}
-                onClick={async (e) => {
-                  e.stopPropagation();
-                  const result = await toggleWishlist({
-                    id: product._id,
-                    name: product.title,
-                    price: product.price,
-                    image: product.images?.[0]
-                  });
-                  if (!result.success && result.error) {
-                    alert(result.error);
-                  }
-                }}
-                title={isInWishlist(product._id) ? 'Remove from wishlist' : 'Add to wishlist'}
-              >
-                <HeartIcon filled={isInWishlist(product._id)} />
-              </button>
+              <img 
+                src={product.images && product.images.length > 0 
+                  ? product.images[selectedImageIndex] 
+                  : 'https://via.placeholder.com/600'} 
+                alt={product.title} 
+              />
+              <div className="preview-actions">
+                <ShareButton
+                  url={window.location.href}
+                  title={product.title}
+                  description={product.description}
+                  image={product.images?.[selectedImageIndex] || product.images?.[0]}
+                  className="preview-share-btn"
+                />
+                <button
+                  className={`preview-wishlist-btn ${isInWishlist(product._id) ? 'wishlist-active' : ''}`}
+                  onClick={async (e) => {
+                    e.stopPropagation();
+                    const result = await toggleWishlist({
+                      id: product._id,
+                      name: product.title,
+                      price: product.price,
+                      image: product.images?.[0]
+                    });
+                    if (!result.success && result.error) {
+                      alert(result.error);
+                    }
+                  }}
+                  title={isInWishlist(product._id) ? 'Remove from wishlist' : 'Add to wishlist'}
+                >
+                  <HeartIcon filled={isInWishlist(product._id)} />
+                </button>
+              </div>
             </div>
             {product.images && product.images.length > 1 && (
               <div className="product-thumbnails">
-                {product.images.slice(1, 5).map((img, idx) => (
-                  <img key={idx} src={img} alt={`${product.title} ${idx + 2}`} />
+                {product.images.map((img, idx) => (
+                  <img 
+                    key={idx} 
+                    src={img} 
+                    alt={`${product.title} ${idx + 1}`}
+                    className={selectedImageIndex === idx ? 'thumbnail-active' : ''}
+                    onClick={() => setSelectedImageIndex(idx)}
+                  />
                 ))}
               </div>
             )}
@@ -219,6 +306,7 @@ const ProductPreview = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

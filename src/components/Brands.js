@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { brandAPI } from '../services/api';
+import ShareButton from './ShareButton';
 import './Page.css';
 import './Brands.css';
 import './Home.css';
@@ -35,8 +37,30 @@ const Brands = () => {
   }, []);
 
   return (
-    <div className="page-container">
-      <div className="page-content">
+    <>
+      <Helmet>
+        <title>Handmade Craft Brands in Hyderabad & Telangana | Artisan Brands | Craft Hindustan</title>
+        <meta 
+          name="description" 
+          content="Discover authentic handmade craft brands and artisan brands in Hyderabad, Warangal, Karimnagar, and all areas of Telangana. Explore curated collections of traditional Indian crafts from skilled artisans." 
+        />
+        <meta 
+          name="keywords" 
+          content="handmade brands Hyderabad, artisan brands Telangana, craft brands Hyderabad, traditional brands Telangana, handmade craft brands, artisan collections, craft brands Warangal, Karimnagar brands, Nizamabad artisans, craft brands India, handmade business brands, artisan marketplace, craft hindustan brands" 
+        />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://crafthindustan.com/brands" />
+        <meta property="og:title" content="Handmade Craft Brands in Hyderabad & Telangana | Craft Hindustan" />
+        <meta property="og:description" content="Discover authentic handmade craft brands and artisan brands in Hyderabad and all areas of Telangana." />
+        <meta property="og:url" content="https://crafthindustan.com/brands" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Handmade Craft Brands in Hyderabad & Telangana" />
+        <meta name="twitter:description" content="Discover authentic handmade craft brands and artisan brands in Hyderabad and all areas of Telangana." />
+      </Helmet>
+      
+      <div className="page-container">
+        <div className="page-content">
         <div className="brands-animation-container">
           <DotLottieReact
             src="https://lottie.host/44c3c51b-efef-4ed8-8a7d-7eb89488955b/vDGQg8fJtu.lottie"
@@ -88,6 +112,13 @@ const Brands = () => {
                     </div>
                   )}
                   <div className="artist-brand-overlay"></div>
+                  <ShareButton
+                    url={`${window.location.origin}/brand/${brand._id}`}
+                    title={`${brand.name} - Handmade Craft Brand`}
+                    description={brand.bio}
+                    image={brand.picture}
+                    className="artist-brand-share-btn"
+                  />
                 </div>
                 <div className="artist-brand-content">
                   <h3 className="artist-brand-name">{brand.name}</h3>
@@ -122,6 +153,7 @@ const Brands = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

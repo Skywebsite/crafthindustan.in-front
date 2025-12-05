@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { WishlistProvider } from './context/WishlistContext';
 import { SocketProvider } from './context/SocketContext';
 import Navbar from './components/Navbar';
@@ -53,40 +54,42 @@ function App() {
   }, []);
 
   return (
-    <WishlistProvider>
-      <SocketProvider>
-        <Router>
-          <ScrollToTop />
-          {loading && <Loader />}
-          <div className="App">
-            <Navbar />
-            <main>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/home" element={<Home />} />
-                <Route path="/brands" element={<Brands />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/events" element={<Events />} />
-                <Route path="/services" element={<Services />} />
-                <Route path="/faq" element={<FAQ />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/wishlist" element={<Wishlist />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/profile/all" element={<MyPosts />} />
-                <Route path="/brand" element={<Brand />} />
-                <Route path="/brand/:id" element={<BrandDetail />} />
-                <Route path="/post" element={<Post />} />
-                <Route path="/post/:id" element={<ProductPreview />} />
-                <Route path="/product/:id" element={<ProductPreview />} />
-                <Route path="/chat" element={<Chat />} />
-                <Route path="/chat/:conversationId" element={<Chat />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
-        </Router>
-      </SocketProvider>
-    </WishlistProvider>
+    <HelmetProvider>
+      <WishlistProvider>
+        <SocketProvider>
+          <Router>
+            <ScrollToTop />
+            {loading && <Loader />}
+            <div className="App">
+              <Navbar />
+              <main>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/home" element={<Home />} />
+                  <Route path="/brands" element={<Brands />} />
+                  <Route path="/products" element={<Products />} />
+                  <Route path="/events" element={<Events />} />
+                  <Route path="/services" element={<Services />} />
+                  <Route path="/faq" element={<FAQ />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/wishlist" element={<Wishlist />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/profile/all" element={<MyPosts />} />
+                  <Route path="/brand" element={<Brand />} />
+                  <Route path="/brand/:id" element={<BrandDetail />} />
+                  <Route path="/post" element={<Post />} />
+                  <Route path="/post/:id" element={<ProductPreview />} />
+                  <Route path="/product/:id" element={<ProductPreview />} />
+                  <Route path="/chat" element={<Chat />} />
+                  <Route path="/chat/:conversationId" element={<Chat />} />
+                </Routes>
+              </main>
+              <Footer />
+            </div>
+          </Router>
+        </SocketProvider>
+      </WishlistProvider>
+    </HelmetProvider>
   );
 }
 

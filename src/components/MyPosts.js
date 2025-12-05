@@ -10,6 +10,7 @@ const MyPosts = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [postImageIndices, setPostImageIndices] = useState({});
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -92,28 +93,84 @@ const MyPosts = () => {
         </div>
       ) : (
         <div className="my-posts-grid">
-          {posts.map((post) => (
-            <div key={post._id} className="my-post-card">
-              <div className="my-post-image">
-                <img 
-                  src={post.images && post.images.length > 0 ? post.images[0] : 'https://via.placeholder.com/300'} 
-                  alt={post.title} 
-                />
-                <div className="my-post-overlay">
-                  <button
-                    className="view-post-btn"
-                    onClick={() => navigate(`/post/${post._id}`)}
-                  >
-                    View
-                  </button>
-                  <button
-                    className="delete-post-btn"
-                    onClick={() => handleDeletePost(post._id)}
-                  >
-                    Delete
-                  </button>
+          {posts.map((post) => {
+            const currentIndex = postImageIndices[post._id] || 0;
+            const images = post.images || [];
+            const hasMultipleImages = images.length > 1;
+            
+            const nextImage = (e) => {
+              e.stopPropagation();
+              setPostImageIndices(prev => ({
+                ...prev,
+                [post._id]: (currentIndex + 1) % images.length
+              }));
+            };
+            
+            const prevImage = (e) => {
+              e.stopPropagation();
+              setPostImageIndices(prev => ({
+                ...prev,
+                [post._id]: (currentIndex - 1 + images.length) % images.length
+              }));
+            };
+            
+            const goToImage = (e, idx) => {
+              e.stopPropagation();
+              setPostImageIndices(prev => ({
+                ...prev,
+                [post._id]: idx
+              }));
+            };
+            
+            return (
+              <div key={post._id} className="my-post-card">
+                <div className="my-post-image">
+                  <img 
+                    src={images.length > 0 ? images[currentIndex] : 'https://via.placeholder.com/300'} 
+                    alt={post.title} 
+                  />
+                  {hasMultipleImages && (
+                    <>
+                      <button 
+                        className="image-carousel-btn image-carousel-prev"
+                        onClick={prevImage}
+                        aria-label="Previous image"
+                      >
+                        ‹
+                      </button>
+                      <button 
+                        className="image-carousel-btn image-carousel-next"
+                        onClick={nextImage}
+                        aria-label="Next image"
+                      >
+                        ›
+                      </button>
+                      <div className="image-carousel-dots">
+                        {images.map((_, idx) => (
+                          <span
+                            key={idx}
+                            className={`carousel-dot ${currentIndex === idx ? 'active' : ''}`}
+                            onClick={(e) => goToImage(e, idx)}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  )}
+                  <div className="my-post-overlay">
+                    <button
+                      className="view-post-btn"
+                      onClick={() => navigate(`/post/${post._id}`)}
+                    >
+                      View
+                    </button>
+                    <button
+                      className="delete-post-btn"
+                      onClick={() => handleDeletePost(post._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
-              </div>
               <div className="my-post-content">
                 <span className="my-post-category">{post.category}</span>
                 <h3 className="my-post-title">{post.title}</h3>
@@ -132,7 +189,8 @@ const MyPosts = () => {
                 </div>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

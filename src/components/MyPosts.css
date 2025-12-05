@@ -82,6 +82,76 @@
   object-fit: cover;
 }
 
+.image-carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  color: #667eea;
+  z-index: 5;
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.my-post-card:hover .image-carousel-btn {
+  opacity: 1;
+}
+
+.image-carousel-btn:hover {
+  background: white;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.image-carousel-prev {
+  left: 10px;
+}
+
+.image-carousel-next {
+  right: 10px;
+}
+
+.image-carousel-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 5;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(102, 126, 234, 0.3);
+}
+
+.carousel-dot:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: scale(1.2);
+}
+
+.carousel-dot.active {
+  background: #667eea;
+  border-color: #667eea;
+  width: 10px;
+  height: 10px;
+}
+
 .my-post-overlay {
   position: absolute;
   top: 0;

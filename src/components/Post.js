@@ -21,8 +21,13 @@ const Post = () => {
   
   const [brands, setBrands] = useState([]);
   const [loadingBrands, setLoadingBrands] = useState(true);
-  const [imageFiles, setImageFiles] = useState([]);
-  const [imagePreviews, setImagePreviews] = useState([]);
+  const [imageSlots, setImageSlots] = useState([
+    { file: null, preview: null },
+    { file: null, preview: null },
+    { file: null, preview: null },
+    { file: null, preview: null },
+    { file: null, preview: null }
+  ]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -79,37 +84,136 @@ const Post = () => {
     }));
   };
 
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    
-    if (files.length + imagePreviews.length > 5) {
-      setError('You can upload maximum 5 images');
+  // Compress image function - aggressive compression to stay under Vercel's 4.5MB limit
+  const compressImage = (file, maxWidth = 1000, maxHeight = 1000, quality = 0.65) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        const img = new Image();
+        img.src = e.target.result;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+
+          // Calculate new dimensions
+          if (width > height) {
+            if (width > maxWidth) {
+              height = (height * maxWidth) / width;
+              width = maxWidth;
+            }
+          } else {
+            if (height > maxHeight) {
+              width = (width * maxHeight) / height;
+              height = maxHeight;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Try to compress to under 600KB per image (5 images = ~3MB total, leaving room for form data)
+          const targetSize = 600 * 1024; // 600KB per image
+          let currentQuality = quality;
+
+          const compress = (q) => {
+            canvas.toBlob(
+              (blob) => {
+                if (blob && blob.size > targetSize && q > 0.2) {
+                  // If still too large and quality can be reduced, compress more
+                  compress(Math.max(0.2, q - 0.1));
+                } else {
+                  console.log(`Image compressed: ${(blob?.size || 0) / 1024}KB (quality: ${q.toFixed(2)})`);
+                  resolve(blob || file);
+                }
+              },
+              'image/jpeg',
+              q
+            );
+          };
+
+          compress(currentQuality);
+        };
+        img.onerror = () => {
+          resolve(file); // Fallback to original if image load fails
+        };
+      };
+      reader.onerror = () => {
+        resolve(file); // Fallback to original if read fails
+      };
+    });
+  };
+
+  const handleImageChange = async (index, e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setError('Please select an image file');
+      e.target.value = ''; // Reset input
       return;
     }
 
-    const validFiles = [];
-    files.forEach(file => {
-      if (file.size > 5 * 1024 * 1024) { // 5MB limit
-        setError('Image size should be less than 5MB');
-        return;
-      }
+    // Validate file size (original)
+    if (file.size > 20 * 1024 * 1024) { // 20MB limit for original (will be compressed)
+      setError('Image size should be less than 20MB. Large images will be automatically compressed.');
+      e.target.value = ''; // Reset input
+      return;
+    }
 
-      validFiles.push(file);
+    setError('');
+    setLoading(true);
 
+    try {
+      // Compress image
+      const compressedBlob = await compressImage(file);
+      
+      // Convert blob to File with proper name
+      const compressedFile = new File([compressedBlob], file.name, {
+        type: 'image/jpeg',
+        lastModified: Date.now()
+      });
+      
+      console.log(`Image ${index + 1} compressed: ${file.name} - ${(file.size / 1024 / 1024).toFixed(2)}MB → ${(compressedFile.size / 1024 / 1024).toFixed(2)}MB`);
+      
       // Create preview
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreviews(prev => [...prev, reader.result]);
+        setImageSlots(prev => {
+          const newSlots = [...prev];
+          newSlots[index] = {
+            file: compressedFile,
+            preview: reader.result
+          };
+          return newSlots;
+        });
+        setLoading(false);
       };
-      reader.readAsDataURL(file);
-    });
-
-    setImageFiles(prev => [...prev, ...validFiles]);
+      reader.readAsDataURL(compressedFile);
+    } catch (err) {
+      console.error('Image compression error:', err);
+      setError('Failed to process image. Please try again.');
+      setLoading(false);
+      e.target.value = ''; // Reset input
+    }
   };
 
   const removeImage = (index) => {
-    setImagePreviews(prev => prev.filter((_, i) => i !== index));
-    setImageFiles(prev => prev.filter((_, i) => i !== index));
+    setImageSlots(prev => {
+      const newSlots = [...prev];
+      newSlots[index] = { file: null, preview: null };
+      return newSlots;
+    });
+    // Reset the file input
+    const input = document.getElementById(`image-input-${index}`);
+    if (input) {
+      input.value = '';
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -149,8 +253,27 @@ const Post = () => {
         return;
       }
 
-      if (imageFiles.length === 0) {
+      // Get all uploaded image files
+      const uploadedImages = imageSlots.filter(slot => slot.file !== null);
+      if (uploadedImages.length === 0) {
         setError('Please upload at least one image');
+        setLoading(false);
+        return;
+      }
+
+      const imageFiles = uploadedImages.map(slot => slot.file);
+
+      // Log file sizes for debugging
+      const totalSize = imageFiles.reduce((sum, file) => sum + (file?.size || 0), 0);
+      console.log('Image files to upload:', {
+        count: imageFiles.length,
+        totalSize: `${(totalSize / 1024 / 1024).toFixed(2)}MB`,
+        sizes: imageFiles.map((f, i) => `Image ${i + 1}: ${((f?.size || 0) / 1024).toFixed(2)}KB`)
+      });
+
+      // Warn if total size is too large
+      if (totalSize > 4 * 1024 * 1024) { // 4MB
+        setError(`Total image size (${(totalSize / 1024 / 1024).toFixed(2)}MB) is too large. Please reduce the number of images or use smaller files.`);
         setLoading(false);
         return;
       }
@@ -165,7 +288,8 @@ const Post = () => {
         title: formData.title,
         category: formData.category,
         brand: formData.brand,
-        imageCount: imageFiles.length
+        imageCount: imageFiles.length,
+        totalImageSize: `${(totalSize / 1024 / 1024).toFixed(2)}MB`
       });
 
       const result = await postAPI.createPost(formData, imageFiles, tags);
@@ -185,8 +309,13 @@ const Post = () => {
           quantity: 1,
           location: ''
         });
-        setImageFiles([]);
-        setImagePreviews([]);
+        setImageSlots([
+          { file: null, preview: null },
+          { file: null, preview: null },
+          { file: null, preview: null },
+          { file: null, preview: null },
+          { file: null, preview: null }
+        ]);
         // Navigate to posts or profile
         navigate('/profile');
       } else {
@@ -411,43 +540,44 @@ const Post = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="images">Images * (Max 5 images, 5MB each)</label>
-            <div className="image-upload-area">
-              <input
-                type="file"
-                id="images"
-                name="images"
-                accept="image/*"
-                multiple
-                onChange={handleImageChange}
-                className="image-input"
-              />
-              <label htmlFor="images" className="image-upload-label">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                  <polyline points="17 8 12 3 7 8"/>
-                  <line x1="12" y1="3" x2="12" y2="15"/>
-                </svg>
-                <span>Click to upload images</span>
-              </label>
+            <label>Images * (Max 5 images, images will be automatically compressed)</label>
+            <div className="image-upload-boxes">
+              {imageSlots.map((slot, index) => (
+                <div key={index} className="image-upload-box">
+                  {slot.preview ? (
+                    <div className="image-box-preview">
+                      <img src={slot.preview} alt={`Preview ${index + 1}`} />
+                      <button
+                        type="button"
+                        onClick={() => removeImage(index)}
+                        className="remove-image-btn"
+                        aria-label="Remove image"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="image-box-upload">
+                      <input
+                        type="file"
+                        id={`image-input-${index}`}
+                        accept="image/*"
+                        onChange={(e) => handleImageChange(index, e)}
+                        className="image-input"
+                      />
+                      <label htmlFor={`image-input-${index}`} className="image-box-label">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                          <polyline points="17 8 12 3 7 8"/>
+                          <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                        <span>Image {index + 1}</span>
+                      </label>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
-
-            {imagePreviews.length > 0 && (
-              <div className="image-previews">
-                {imagePreviews.map((preview, index) => (
-                  <div key={index} className="image-preview-item">
-                    <img src={preview} alt={`Preview ${index + 1}`} />
-                    <button
-                      type="button"
-                      onClick={() => removeImage(index)}
-                      className="remove-image-btn"
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
 
           <div className="form-actions">
