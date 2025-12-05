@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from 'react-19-helmet-async';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { brandAPI } from '../services/api';
 import ShareButton from './ShareButton';

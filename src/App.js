@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
+import { HelmetProvider } from 'react-19-helmet-async';
 import { WishlistProvider } from './context/WishlistContext';
 import { SocketProvider } from './context/SocketContext';
 import Navbar from './components/Navbar';

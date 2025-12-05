@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from 'react-19-helmet-async';
 import { useWishlist } from '../context/WishlistContext';
 import HeartIcon from './HeartIcon';
 import './Page.css';
