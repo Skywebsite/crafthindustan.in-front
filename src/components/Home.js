@@ -306,7 +306,41 @@ const Home = () => {
     "url": "https://thecrafthindustan.in",
     "logo": "https://thecrafthindustan.in/images/Cream Simple Art and Craft Store Logo (1).png",
     "description": "A platform celebrating handmade crafts, traditional art, and artisan products from artisans across India",
-    "sameAs": []
+    "sameAs": [
+      "https://www.facebook.com/crafthindustan",
+      "https://www.instagram.com/crafthindustan",
+      "https://twitter.com/crafthindustan"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+91-9876543210",
+      "contactType": "customer service",
+      "areaServed": "IN",
+      "availableLanguage": ["en", "hi"]
+    }
+  };
+
+  const webSiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Craft Hindustan",
+    "url": "https://thecrafthindustan.in",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://thecrafthindustan.in/products?search={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://thecrafthindustan.in"
+    }]
   };
 
   return (
@@ -368,6 +402,16 @@ const Home = () => {
         <script type="application/ld+json">
           {JSON.stringify(organizationSchema)}
         </script>
+
+        {/* Structured Data for WebSite */}
+        <script type="application/ld+json">
+          {JSON.stringify(webSiteSchema)}
+        </script>
+
+        {/* Structured Data for Breadcrumb */}
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbSchema)}
+        </script>
       </Helmet>
 
       <div className="home-container">
@@ -395,54 +439,6 @@ const Home = () => {
               autoplay
               className="lottie-animation-hero"
             />
-          </div>
-        </div>
-
-        {/* Why Choose Us Section */}
-        <div className="why-choose-us-section" id="why-choose-us">
-          <div className="why-choose-us-container">
-            <h2 className="why-choose-us-title">Why Choose Craft Hindustan?</h2>
-            <div className="features-grid">
-              <div className="feature-card">
-                <div className="feature-icon">
-                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                  </svg>
-                </div>
-                <h3>Authentic Craftsmanship</h3>
-                <p>Every piece is handcrafted with traditional techniques passed down through generations.</p>
-              </div>
-              <div className="feature-card">
-                <div className="feature-icon">
-                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                  </svg>
-                </div>
-                <h3>Direct Connection</h3>
-                <p>Chat directly with artisans to customize your orders and understand the story behind each creation.</p>
-              </div>
-              <div className="feature-card">
-                <div className="feature-icon">
-                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="10" />
-                    <line x1="2" y1="12" x2="22" y2="12" />
-                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                  </svg>
-                </div>
-                <h3>International Reach</h3>
-                <p>We deliver unique Indian heritage to enthusiasts across the globe with reliable international shipping.</p>
-              </div>
-              <div className="feature-card">
-                <div className="feature-icon">
-                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
-                    <line x1="4" y1="22" x2="4" y2="15" />
-                  </svg>
-                </div>
-                <h3>International Languages</h3>
-                <p>Experience our platform in multiple international languages, making Indian art accessible to everyone.</p>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -683,6 +679,54 @@ const Home = () => {
                 ))}
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Why Choose Us Section */}
+        <div className="why-choose-us-section" id="why-choose-us">
+          <div className="why-choose-us-container">
+            <h2 className="why-choose-us-title">Why Choose Craft Hindustan?</h2>
+            <div className="features-grid">
+              <div className="feature-card">
+                <div className="feature-icon">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                  </svg>
+                </div>
+                <h3>Authentic Craftsmanship</h3>
+                <p>Every piece is handcrafted with traditional techniques passed down through generations.</p>
+              </div>
+              <div className="feature-card">
+                <div className="feature-icon">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  </svg>
+                </div>
+                <h3>Direct Connection</h3>
+                <p>Chat directly with artisans to customize your orders and understand the story behind each creation.</p>
+              </div>
+              <div className="feature-card">
+                <div className="feature-icon">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="2" y1="12" x2="22" y2="12" />
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                  </svg>
+                </div>
+                <h3>International Reach</h3>
+                <p>We deliver unique Indian heritage to enthusiasts across the globe with reliable international shipping.</p>
+              </div>
+              <div className="feature-card">
+                <div className="feature-icon">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+                    <line x1="4" y1="22" x2="4" y2="15" />
+                  </svg>
+                </div>
+                <h3>International Languages</h3>
+                <p>Experience our platform in multiple international languages, making Indian art accessible to everyone.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
