@@ -22,6 +22,7 @@ const Home = () => {
     totalArtisans: 0
   });
   const [postImageIndices, setPostImageIndices] = useState({});
+  const [hoveredPostId, setHoveredPostId] = useState(null);
 
   // Helper function to safely get price as string
   const getPriceString = (price) => {
@@ -171,55 +172,68 @@ const Home = () => {
     fetchStats();
   }, []);
 
-  // Animated counter component
-  const AnimatedCounter = ({ end, duration = 2000, label }) => {
+  // Auto-slide effect for hovered product
+  useEffect(() => {
+    let interval;
+    if (hoveredPostId) {
+      const post = posts.find(p => p._id === hoveredPostId);
+      if (post && post.images && post.images.length > 1) {
+        interval = setInterval(() => {
+          setPostImageIndices(prev => ({
+            ...prev,
+            [hoveredPostId]: ((prev[hoveredPostId] || 0) + 1) % post.images.length
+          }));
+        }, 1500); // Change image every 1.5 seconds on hover
+      }
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [hoveredPostId, posts]);
+
+  const AnimatedCounter = ({ end, duration = 3000, label }) => { // Increased duration for better "reading"
     const [count, setCount] = useState(0);
-    const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting && !isVisible) {
-            setIsVisible(true);
-          }
-        },
-        { threshold: 0.1 }
-      );
-
-      const element = document.getElementById(`counter-${label}`);
-      if (element) {
-        observer.observe(element);
+      if (!end) {
+        setCount(0);
+        return;
       }
 
-      return () => {
-        if (element) {
-          observer.unobserve(element);
-        }
-      };
-    }, [label, isVisible]);
-
-    useEffect(() => {
-      if (!isVisible) return;
+      // Reset to 0 whenever end value arrives (e.g. after fetch)
+      setCount(0);
 
       let startTime = null;
+      let frameId;
+      const delay = 300; // Small delay so user sees it start from 0
+
       const animate = (currentTime) => {
         if (!startTime) startTime = currentTime;
-        const progress = Math.min((currentTime - startTime) / duration, 1);
 
-        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-        const currentCount = Math.floor(easeOutQuart * end);
+        const elapsedTime = currentTime - startTime;
+        if (elapsedTime < delay) {
+          frameId = requestAnimationFrame(animate);
+          return;
+        }
+
+        const progress = Math.min((elapsedTime - delay) / duration, 1);
+
+        // Use a smoother easeOut for a nice "reading" feel that slows down at the end
+        const easeOutQuint = 1 - Math.pow(1 - progress, 5);
+        const currentCount = Math.floor(easeOutQuint * end);
 
         setCount(currentCount);
 
         if (progress < 1) {
-          requestAnimationFrame(animate);
+          frameId = requestAnimationFrame(animate);
         } else {
           setCount(end);
         }
       };
 
-      requestAnimationFrame(animate);
-    }, [isVisible, end, duration]);
+      frameId = requestAnimationFrame(animate);
+      return () => cancelAnimationFrame(frameId);
+    }, [end, duration]);
 
     return (
       <div className="stats-ribbon-item" id={`counter-${label}`}>
@@ -377,9 +391,15 @@ const Home = () => {
         {/* Statistics Ribbon Section */}
         <div className="stats-ribbon-section">
           <div className="stats-ribbon-container">
-            <AnimatedCounter end={stats.totalBrands} label="brands" />
-            <AnimatedCounter end={stats.totalProducts} label="products" />
-            <AnimatedCounter end={stats.totalArtisans} label="artisans" />
+            <div className="stats-banner-intro">
+              <h2 className="stats-banner-title">Our Growing Community</h2>
+              <p className="stats-banner-subtitle">Celebrating the spirit of handmade art across India</p>
+            </div>
+            <div className="stats-grid">
+              <AnimatedCounter end={stats.totalBrands} label="brands" />
+              <AnimatedCounter end={stats.totalProducts} label="products" />
+              <AnimatedCounter end={stats.totalArtisans} label="artisans" />
+            </div>
           </div>
         </div>
 
@@ -431,7 +451,13 @@ const Home = () => {
                   };
 
                   return (
-                    <div key={post._id} className="featured-product-card" onClick={() => navigate(`/post/${post._id}`)}>
+                    <div
+                      key={post._id}
+                      className="featured-product-card"
+                      onClick={() => navigate(`/post/${post._id}`)}
+                      onMouseEnter={() => setHoveredPostId(post._id)}
+                      onMouseLeave={() => setHoveredPostId(null)}
+                    >
                       <div className="featured-product-image">
                         <img
                           src={images.length > 0 ? images[currentIndex] : 'https://via.placeholder.com/300'}

@@ -72,18 +72,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   color: rgba(255, 255, 255, 0.9);
   transition: all 0.3s ease;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: transparent;
 }
 
 .social-icon:hover {
   color: white;
-  background-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
+  background-color: transparent;
+  transform: scale(1.1) translateY(-2px);
 }
 
 .social-icon svg {
@@ -211,4 +210,3 @@
     text-align: center;
   }
 }
-

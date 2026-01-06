@@ -26,6 +26,7 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsConditions from './components/TermsConditions';
 import RefundPolicy from './components/RefundPolicy';
 import ScrollToTop from './components/ScrollToTop';
+import Chatbot from './components/Chatbot';
 import './App.css';
 
 function App() {
@@ -93,6 +94,7 @@ function App() {
                 </Routes>
               </main>
               <Footer />
+              <Chatbot />
             </div>
           </Router>
         </SocketProvider>

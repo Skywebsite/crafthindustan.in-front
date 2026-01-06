@@ -52,7 +52,7 @@ const PrivacyPolicy = () => {
                         <div className="faq-item">
                             <h3 className="faq-question">6. Contact Us</h3>
                             <p className="faq-answer">
-                                If you have any questions about this Privacy Policy, please contact us at official@skyweb.xyz.
+                                If you have any questions about this Privacy Policy, please contact us at offical@thecrafthindustan.in.
                             </p>
                         </div>
                     </div>
