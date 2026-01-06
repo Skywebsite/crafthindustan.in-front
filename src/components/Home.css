@@ -79,9 +79,11 @@
     opacity: 0;
     transform: rotateX(90deg);
   }
+
   50% {
     opacity: 0.5;
   }
+
   100% {
     opacity: 1;
     transform: rotateX(0deg);
@@ -104,34 +106,38 @@
 }
 
 .home-right {
-  flex: 1;
+  flex: 1.5;
+  /* Increased flex to give more room to the animation */
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
   min-height: 80vh;
-  padding-right: 2rem;
+  padding-right: 0;
   overflow: visible;
-  max-width: 50%;
+  max-width: 60%;
+  /* Increased max-width */
   position: relative;
 }
 
-.lottie-animation {
-  width: 100%;
+.lottie-animation-hero {
+  width: 110%;
+  /* Makes it "big" and spill out slightly for a nice effect */
   height: auto;
-  max-width: 600px;
-  min-width: 500px;
-  min-height: 600px;
-  max-height: 90vh;
+  max-width: 800px;
+  min-width: 600px;
+  min-height: 700px;
+  max-height: 100vh;
   margin: 0 auto;
   object-fit: contain;
   display: block;
-  filter: drop-shadow(0 10px 30px rgba(139, 69, 19, 0.15));
-  transition: transform 0.3s ease;
+  filter: drop-shadow(0 15px 45px rgba(139, 69, 19, 0.2));
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-origin: center right;
 }
 
-.lottie-animation:hover {
-  transform: scale(1.02);
+.lottie-animation-hero:hover {
+  transform: scale(1.05) translateX(-10px);
 }
 
 /* Tablet responsive design */
@@ -410,6 +416,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -813,9 +820,12 @@
 }
 
 @keyframes heartBeat {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.2);
   }
@@ -1096,4 +1106,3 @@
     padding: 1rem;
   }
 }
-

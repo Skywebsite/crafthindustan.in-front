@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useWishlist } from '../context/WishlistContext';
 import HeartIcon from './HeartIcon';
 import Login from './Login';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -10,6 +11,7 @@ const Navbar = () => {
   const { isLoggedIn, logout, wishlist, user, login } = useWishlist();
   const [showLogin, setShowLogin] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isHoveredLogin, setIsHoveredLogin] = useState(false);
 
   // Close mobile menu when route changes
   useEffect(() => {
@@ -66,8 +68,8 @@ const Navbar = () => {
     <>
       {/* Mobile menu backdrop */}
       {isMobileMenuOpen && (
-        <div 
-          className="mobile-menu-backdrop" 
+        <div
+          className="mobile-menu-backdrop"
           onClick={closeMobileMenu}
           aria-hidden="true"
         />
@@ -80,7 +82,7 @@ const Navbar = () => {
         </Link>
 
         {/* Hamburger menu button */}
-        <button 
+        <button
           className={`hamburger-menu ${isMobileMenuOpen ? 'active' : ''}`}
           onClick={toggleMobileMenu}
           aria-label="Toggle menu"
@@ -170,8 +172,8 @@ const Navbar = () => {
             {isLoggedIn && (
               <>
                 {/* Create Post Button - Mobile Friendly */}
-                <Link 
-                  to="/post" 
+                <Link
+                  to="/post"
                   className={`create-post-btn-nav ${location.pathname === '/post' ? 'active' : ''}`}
                   onClick={closeMobileMenu}
                 >
@@ -182,8 +184,25 @@ const Navbar = () => {
                   <span>Create Post</span>
                 </Link>
 
-                <Link 
-                  to="/wishlist" 
+                <Link
+                  to="/dashboard"
+                  className={`wishlist-link ${location.pathname === '/dashboard' ? 'active' : ''}`}
+                  onClick={closeMobileMenu}
+                  title="Artisan Dashboard"
+                >
+                  <span className="wishlist-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="3" width="7" height="7"></rect>
+                      <rect x="14" y="3" width="7" height="7"></rect>
+                      <rect x="14" y="14" width="7" height="7"></rect>
+                      <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                  </span>
+                  <span className="navbar-text mobile-only-text">Dashboard</span>
+                </Link>
+
+                <Link
+                  to="/wishlist"
                   className={`wishlist-link ${location.pathname === '/wishlist' ? 'active' : ''}`}
                   onClick={closeMobileMenu}
                 >
@@ -193,7 +212,7 @@ const Navbar = () => {
                   {wishlist.length > 0 && <span className="wishlist-count">{wishlist.length}</span>}
                 </Link>
 
-                <Link 
+                <Link
                   to="/chat"
                   aria-label="Open chat"
                   className={`chat-icon-link ${location.pathname.startsWith('/chat') ? 'active' : ''}`}
@@ -205,18 +224,18 @@ const Navbar = () => {
                     </svg>
                   </span>
                 </Link>
-                
+
                 {/* Profile Link */}
-                <Link 
-                  to="/profile" 
+                <Link
+                  to="/profile"
                   className="profile-btn-link"
                   onClick={closeMobileMenu}
                 >
                   <div className="profile-avatar">
                     {getProfileImage() ? (
-                      <img 
-                        src={getProfileImage()} 
-                        alt="Profile" 
+                      <img
+                        src={getProfileImage()}
+                        alt="Profile"
                         className="profile-image"
                       />
                     ) : (
@@ -229,27 +248,40 @@ const Navbar = () => {
                     <span className="profile-name">
                       {user?.name || user?.displayName || 'User'}
                     </span>
-                    <span className="profile-email">
-                      {user?.email || ''}
-                    </span>
                   </div>
                 </Link>
               </>
             )}
             {!isLoggedIn && (
-              <button className="login-btn" onClick={() => {
-                setShowLogin(true);
-                closeMobileMenu();
-              }}>
-                Login
+              <button
+                className={`login-btn ${isHoveredLogin ? 'lottie-active' : ''}`}
+                onClick={() => {
+                  setShowLogin(true);
+                  closeMobileMenu();
+                }}
+                onMouseEnter={() => setIsHoveredLogin(true)}
+                onMouseLeave={() => setIsHoveredLogin(false)}
+              >
+                {isHoveredLogin ? (
+                  <div className="login-lottie-container">
+                    <DotLottieReact
+                      src="https://lottie.host/aae2632f-11f6-4e7b-a554-9e4ac9f2bde9/KMLYCAyoS3.lottie"
+                      loop
+                      autoplay
+                      speed={3}
+                    />
+                  </div>
+                ) : (
+                  "Login"
+                )}
               </button>
             )}
           </div>
         </div>
       </nav>
       {showLogin && (
-        <Login 
-          onClose={() => setShowLogin(false)} 
+        <Login
+          onClose={() => setShowLogin(false)}
           onSuccess={handleLoginSuccess}
         />
       )}

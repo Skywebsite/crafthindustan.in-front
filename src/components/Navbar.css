@@ -114,9 +114,21 @@
   gap: 1rem;
 }
 
+.mobile-only-text {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-only-text {
+    display: inline;
+    margin-left: 0.5rem;
+  }
+}
+
 /* Create Post Button - Hidden on desktop, visible on mobile */
 .create-post-btn-nav {
-  display: none; /* Hidden by default on desktop */
+  display: none;
+  /* Hidden by default on desktop */
   align-items: center;
   gap: 0.5rem;
   background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
@@ -238,32 +250,87 @@
   background-color: #007bff;
   color: white;
   border: none;
-  padding: 0.6rem 1.5rem;
+  padding: 0.6rem 1.2rem;
   border-radius: 5px;
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  text-align: right;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-align: center;
+  width: 100px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  position: relative;
+  box-sizing: border-box;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .login-btn:hover {
   background-color: #0056b3;
+  width: 200px;
+  height: 70px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.login-btn.lottie-active {
+  padding: 0;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.login-lottie-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent !important;
+  pointer-events: none;
+  animation: lottiePop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes lottiePop {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.login-lottie-container>div {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.login-lottie-container svg {
+  width: 100% !important;
+  height: 100% !important;
+  shape-rendering: geometricPrecision !important;
 }
 
 /* Profile Link Styles */
 .profile-btn-link {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.25rem;
   background: none;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
+  border: none;
+  padding: 0.25rem 0.5rem;
   text-decoration: none;
   transition: all 0.3s ease;
-  background-color: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: transparent;
 }
 
 .profile-btn-link:hover {
@@ -299,28 +366,19 @@
 .profile-info {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
+  align-items: center;
+  text-align: center;
   min-width: 0;
 }
 
 .profile-name {
   font-weight: 600;
   color: #333;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 150px;
-}
-
-.profile-email {
-  font-size: 0.8rem;
-  color: #666;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 150px;
+  max-width: 100px;
 }
 
 
@@ -341,6 +399,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -495,7 +554,8 @@
   }
 
   .create-post-btn-nav {
-    display: flex; /* Show on mobile */
+    display: flex;
+    /* Show on mobile */
     width: 100%;
     justify-content: center;
     padding: 1rem 1.5rem;
@@ -565,4 +625,3 @@
     padding: 1.5rem 1rem;
   }
 }
-

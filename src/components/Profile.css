@@ -198,6 +198,27 @@
   flex: 1;
 }
 
+.profile-header-lottie {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.profile-header-lottie>div {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@media (max-width: 992px) {
+  .profile-header-lottie {
+    width: 150px;
+    height: 150px;
+  }
+}
+
 .profile-name-section {
   display: flex;
   align-items: center;
@@ -290,6 +311,21 @@
   font-size: 1.1rem;
   color: #666;
   margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.profile-brand-tag {
+  background: #f1f5f9;
+  color: #8B4513;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-left: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid #e2e8f0;
 }
 
 /* Profile Menu Grid */
@@ -401,4 +437,3 @@
     max-width: 100%;
   }
 }
-

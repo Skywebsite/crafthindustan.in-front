@@ -7,7 +7,7 @@ const Loader = () => {
     <div className="loader-overlay">
       <div className="loader-container">
         <DotLottieReact
-          src="https://lottie.host/c5b0626f-cfcb-499f-a3be-794da26db6b9/vvWCrcxoIh.lottie"
+          src="https://lottie.host/a49d2e4d-aae7-4745-af4c-c0a60146e393/dlwJ5Ah0Sz.lottie"
           loop
           autoplay
           className="loader-animation"

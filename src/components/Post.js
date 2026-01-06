@@ -7,7 +7,7 @@ import './Post.css';
 const Post = () => {
   const { isLoggedIn, user } = useWishlist();
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -18,7 +18,7 @@ const Post = () => {
     quantity: 1,
     location: ''
   });
-  
+
   const [brands, setBrands] = useState([]);
   const [loadingBrands, setLoadingBrands] = useState(true);
   const [imageSlots, setImageSlots] = useState([
@@ -172,15 +172,15 @@ const Post = () => {
     try {
       // Compress image
       const compressedBlob = await compressImage(file);
-      
+
       // Convert blob to File with proper name
       const compressedFile = new File([compressedBlob], file.name, {
         type: 'image/jpeg',
         lastModified: Date.now()
       });
-      
+
       console.log(`Image ${index + 1} compressed: ${file.name} - ${(file.size / 1024 / 1024).toFixed(2)}MB → ${(compressedFile.size / 1024 / 1024).toFixed(2)}MB`);
-      
+
       // Create preview
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -316,8 +316,8 @@ const Post = () => {
           { file: null, preview: null },
           { file: null, preview: null }
         ]);
-        // Navigate to posts or profile
-        navigate('/profile');
+        // Navigate to dashboard
+        navigate('/dashboard');
       } else {
         const errorMsg = result.error || result.errors?.[0]?.msg || 'Failed to post craft';
         setError(errorMsg);
@@ -326,7 +326,7 @@ const Post = () => {
       console.error('Post error:', err);
       const errorMsg = err.message || 'Failed to post craft. Please try again.';
       setError(errorMsg);
-      
+
       // If user not found or token invalid, prompt to login again
       if (errorMsg.includes('User not found') || errorMsg.includes('Invalid token') || errorMsg.includes('No token')) {
         if (window.confirm('Your session has expired. Please log in again to continue.')) {
@@ -567,9 +567,9 @@ const Post = () => {
                       />
                       <label htmlFor={`image-input-${index}`} className="image-box-label">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                          <polyline points="17 8 12 3 7 8"/>
-                          <line x1="12" y1="3" x2="12" y2="15"/>
+                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                          <polyline points="17 8 12 3 7 8" />
+                          <line x1="12" y1="3" x2="12" y2="15" />
                         </svg>
                         <span>Image {index + 1}</span>
                       </label>

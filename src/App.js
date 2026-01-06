@@ -21,6 +21,10 @@ import Post from './components/Post';
 import Brand from './components/Brand';
 import BrandDetail from './components/BrandDetail';
 import MyPosts from './components/MyPosts';
+import Dashboard from './components/Dashboard';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import TermsConditions from './components/TermsConditions';
+import RefundPolicy from './components/RefundPolicy';
 import ScrollToTop from './components/ScrollToTop';
 import './App.css';
 
@@ -75,6 +79,7 @@ function App() {
                   <Route path="/wishlist" element={<Wishlist />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/profile/all" element={<MyPosts />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/brand" element={<Brand />} />
                   <Route path="/brand/:id" element={<BrandDetail />} />
                   <Route path="/post" element={<Post />} />
@@ -82,6 +87,9 @@ function App() {
                   <Route path="/product/:id" element={<ProductPreview />} />
                   <Route path="/chat" element={<Chat />} />
                   <Route path="/chat/:conversationId" element={<Chat />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/terms-conditions" element={<TermsConditions />} />
+                  <Route path="/refund-policy" element={<RefundPolicy />} />
                 </Routes>
               </main>
               <Footer />
