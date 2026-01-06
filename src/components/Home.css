@@ -313,6 +313,125 @@
   }
 }
 
+/* Why Choose Us Section */
+.why-choose-us-section {
+  width: 100%;
+  padding: 6rem 2rem;
+  background-color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+.why-choose-us-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.why-choose-us-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #8B4513;
+  margin-bottom: 4rem;
+  text-align: center;
+  font-family: 'Adrik Serif', 'Adirek Serif', 'Playfair Display', 'Merriweather', serif;
+  position: relative;
+}
+
+.why-choose-us-title::after {
+  content: '';
+  position: absolute;
+  bottom: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: #deb887;
+  border-radius: 2px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2.5rem;
+}
+
+.feature-card {
+  padding: 3rem 2rem;
+  background: #fff9f5;
+  border-radius: 20px;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 1px solid rgba(139, 69, 19, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  background: #ffffff;
+  box-shadow: 0 20px 40px rgba(139, 69, 19, 0.1);
+  border-color: rgba(139, 69, 19, 0.1);
+}
+
+.feature-icon {
+  width: 80px;
+  height: 80px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8B4513;
+  box-shadow: 0 10px 20px rgba(139, 69, 19, 0.08);
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+  background: #8B4513;
+  color: white;
+  transform: rotate(10deg);
+}
+
+.feature-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+  font-family: 'Adrik Serif', serif;
+}
+
+.feature-card p {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .why-choose-us-section {
+    padding: 4rem 1.5rem;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .why-choose-us-title {
+    font-size: 2rem;
+    margin-bottom: 3rem;
+  }
+}
+
+
 /* Statistics Ribbon Section - Slim Premium Banner */
 .stats-ribbon-section {
   width: 100%;

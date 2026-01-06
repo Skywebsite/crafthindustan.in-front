@@ -80,7 +80,17 @@ const Home = () => {
     { lang: 'Gujarati', text: 'શા માટે પસંદ કરો' },
     { lang: 'Kannada', text: 'ಏಕೆ ಆಯ್ಕೆ' },
     { lang: 'Malayalam', text: 'എന്തിനാണ്' },
-    { lang: 'Punjabi', text: 'ਕਿਉਂ ਚੁਣੋ' }
+    { lang: 'Punjabi', text: 'ਕਿਉਂ ਚੁਣੋ' },
+    { lang: 'French', text: 'Pourquoi choisir' },
+    { lang: 'Spanish', text: 'Por qué elegir' },
+    { lang: 'German', text: 'Warum wählen' },
+    { lang: 'Japanese', text: 'なぜ選ぶのか' },
+    { lang: 'Arabic', text: 'لماذا تختار' },
+    { lang: 'Russian', text: 'Почему выбирают' },
+    { lang: 'Portuguese', text: 'Por que escolher' },
+    { lang: 'Italian', text: 'Perché scegliere' },
+    { lang: 'Korean', text: '왜 선택 하는가' },
+    { lang: 'Chinese', text: '为什么选择' }
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -385,6 +395,54 @@ const Home = () => {
               autoplay
               className="lottie-animation-hero"
             />
+          </div>
+        </div>
+
+        {/* Why Choose Us Section */}
+        <div className="why-choose-us-section" id="why-choose-us">
+          <div className="why-choose-us-container">
+            <h2 className="why-choose-us-title">Why Choose Craft Hindustan?</h2>
+            <div className="features-grid">
+              <div className="feature-card">
+                <div className="feature-icon">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                  </svg>
+                </div>
+                <h3>Authentic Craftsmanship</h3>
+                <p>Every piece is handcrafted with traditional techniques passed down through generations.</p>
+              </div>
+              <div className="feature-card">
+                <div className="feature-icon">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  </svg>
+                </div>
+                <h3>Direct Connection</h3>
+                <p>Chat directly with artisans to customize your orders and understand the story behind each creation.</p>
+              </div>
+              <div className="feature-card">
+                <div className="feature-icon">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="2" y1="12" x2="22" y2="12" />
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                  </svg>
+                </div>
+                <h3>International Reach</h3>
+                <p>We deliver unique Indian heritage to enthusiasts across the globe with reliable international shipping.</p>
+              </div>
+              <div className="feature-card">
+                <div className="feature-icon">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+                    <line x1="4" y1="22" x2="4" y2="15" />
+                  </svg>
+                </div>
+                <h3>International Languages</h3>
+                <p>Experience our platform in multiple international languages, making Indian art accessible to everyone.</p>
+              </div>
+            </div>
           </div>
         </div>
 
